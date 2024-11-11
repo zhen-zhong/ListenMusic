@@ -1,19 +1,17 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import HomeScreen from '../screen/HomeScreen';
 import SettingsScreen from '../screen/MineScreen';
+import images from '../utils/images';
 
-// 定义底部导航的参数类型
 type BottomTabParamList = {
     Home: undefined;
     Settings: undefined;
-    Profile: undefined;
 };
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
-// 自定义 Tab Bar 的 Props 类型
 interface CustomTabBarProps {
     state: any;
     descriptors: any;
@@ -23,7 +21,7 @@ interface CustomTabBarProps {
 function CustomTabBar({ state, descriptors, navigation }: CustomTabBarProps) {
     return (
         <View style={styles.tabBar}>
-            {state.routes.map((route:any, index:number) => {
+            {state.routes.map((route: any, index: number) => {
                 const { options } = descriptors[route.key];
                 const label = options.tabBarLabel !== undefined ? options.tabBarLabel : route.name;
                 const isFocused = state.index === index;
@@ -40,12 +38,23 @@ function CustomTabBar({ state, descriptors, navigation }: CustomTabBarProps) {
                     }
                 };
 
+                // 根据页面和选中状态选择图标
+                const iconSource =
+                    route.name === 'Home'
+                        ? isFocused
+                            ? images.homeSelect
+                            : images.home
+                        : isFocused
+                            ? images.mineSelect
+                            : images.mine;
+
                 return (
                     <TouchableOpacity
                         key={index}
                         onPress={onPress}
                         style={[styles.tabItem, isFocused && styles.tabItemFocused]}
                     >
+                        <Image source={iconSource} style={styles.icon} />
                         <Text style={[styles.tabText, isFocused && styles.tabTextFocused]}>{label}</Text>
                     </TouchableOpacity>
                 );
@@ -80,14 +89,19 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     tabItemFocused: {
-        backgroundColor: '#f0f0f0',
+        // backgroundColor: '#f0f0f0',
     },
     tabText: {
         fontSize: 12,
-        color: '#333',
+        color: '#BABABA',
     },
     tabTextFocused: {
-        color: '#007aff',
+        color: '#51E886',
         fontWeight: 'bold',
+    },
+    icon: {
+        width: 24,
+        height: 24,
+        marginBottom: 5,
     },
 });

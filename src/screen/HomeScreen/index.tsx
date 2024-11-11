@@ -1,8 +1,16 @@
-import { View } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text } from 'react-native';
 
-const HomeScreen = () =>{
+const HomeScreen = () => {
+
+    useEffect(() => {
+        console.log('HomeScreen');
+    }, [])
+
     return (
-        <View>HomeScreen</View>
+        <View>
+            <Text>HomeScreen</Text>
+        </View>
     )
 }
 export default HomeScreen
