@@ -2,12 +2,12 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import HomeScreen from '../screen/HomeScreen';
-import SettingsScreen from '../screen/MineScreen';
+import MineScreenScreen from '../screen/MineScreen';
 import images from '../utils/images';
 
 type BottomTabParamList = {
     Home: undefined;
-    Settings: undefined;
+    MineScreen: undefined;
 };
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
@@ -19,6 +19,8 @@ interface CustomTabBarProps {
 }
 
 function CustomTabBar({ state, descriptors, navigation }: CustomTabBarProps) {
+    console.log(state, descriptors, navigation);
+    
     return (
         <View style={styles.tabBar}>
             {state.routes.map((route: any, index: number) => {
@@ -67,7 +69,7 @@ const CustomBottomTabNavigator: React.FC = () => {
     return (
         <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}>
             <Tab.Screen name="Home" component={HomeScreen} options={{ tabBarLabel: '首页', headerShown: false }} />
-            <Tab.Screen name="Settings" component={SettingsScreen} options={{ tabBarLabel: '设置' }} />
+            <Tab.Screen name="MineScreen" component={MineScreenScreen} options={{ tabBarLabel: '设置' }} />
         </Tab.Navigator>
     );
 };
