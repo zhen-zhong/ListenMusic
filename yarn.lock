@@ -2971,6 +2971,7 @@ __metadata:
     react: 18.3.1
     react-native: 0.76.1
     react-native-gesture-handler: ^2.20.2
+    react-native-keep-awake: ^4.0.0
     react-native-mmkv: ^3.1.0
     react-native-reanimated: ^3.16.1
     react-native-safe-area-context: ^4.14.0
@@ -8056,6 +8057,13 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 8d9e7496615dad4e6bb6dd1c750c2d3b2e57c6173a1d466b4503b28b159b1dbbb1e7527c3d4bda12324422200c07835f34d81c9bd3cd1b7f594b22949bef274a
+  languageName: node
+  linkType: hard
+
+"react-native-keep-awake@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "react-native-keep-awake@npm:4.0.0"
+  checksum: b041c5c7c27e2ed7d97aafbea7e05b2676dd1ae712df6de4bb6076946d4ae76e65aa2e666748bfacc8959667ae9704787466d17d348cf79bb0b8c1b327c6a110
   languageName: node
   linkType: hard
 
