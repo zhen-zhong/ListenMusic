@@ -1,50 +1,62 @@
-import axios, { AxiosResponse } from 'axios';
-
-const BASE_URL = 'http://127.0.0.1/api/v1';
+import axios, { AxiosResponse, CancelTokenSource } from 'axios';
 
 const instance = axios.create({
-    baseURL: BASE_URL,
-    timeout: 60000, // 超时时间
-    headers: { //请求头
+    baseURL: '',
+    timeout: 60000,
+    headers: { 
         'Content-Type': 'application/json',
-        'Accept-Language': 'en',
     },
 });
 
-// 添加请求拦截器
+const cancelSources: { [key: string]: CancelTokenSource } = {};
+
 instance.interceptors.request.use(
-    response => {
-        // response.headers['Authorization'] = config.utils.setCookies('homeToken');
-        return response;
+    (config) => {
+        const requestKey = `${config.method}-${config.url}-${JSON.stringify(config.params)}-${JSON.stringify(config.data)}`;
+
+        if (cancelSources[requestKey]) {
+            cancelSources[requestKey].cancel('Operation canceled due to new request.');
+        }
+
+        cancelSources[requestKey] = axios.CancelToken.source();
+
+        config.cancelToken = cancelSources[requestKey].token;
+        return config;
     },
-    error => {
+    (error) => {
         return Promise.reject(error);
     }
 );
 
-// 添加响应拦截器
 instance.interceptors.response.use(
     (response: AxiosResponse) => {
         const { data } = response;
-        if (data.code == 20000) return data;
+        if (data.code === 20000) return data;
         return Promise.reject(new Error(data.message));
     },
     (error) => {
+        if (axios.isCancel(error)) {
+            console.log('Request canceled: ', error.message);
+            return Promise.resolve({ canceled: true });
+        }
+
         const { data } = error.response;
-        if (data.code == 40100) {
+        if (data.code === 40100) {
             return Promise.reject(error);
         }
-        // if (error.status === 500) {
-        //     config.utils.useMessage().success(data.message)
-        //     return Promise.resolve(data);
-        // }
         if (error.status === 502 || error.status === 500) {
-            // 处理失败逻辑
             return Promise.reject(error);
         }
-        // config.utils.useMessage().error(data.message)
+
         return Promise.reject(error);
     }
 );
+
+export const cancelRequest = (requestKey: string) => {
+    if (cancelSources[requestKey]) {
+        cancelSources[requestKey].cancel('Request canceled by user.');
+        delete cancelSources[requestKey];
+    }
+};
 
 export default instance;
