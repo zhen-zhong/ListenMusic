@@ -55,7 +55,6 @@ function CustomTabBar({ state, descriptors, navigation }: CustomTabBarProps) {
                     }
                 };
 
-                // const iconSource = getTabBarIconSource(route.name, isFocused);
                 const iconSource = useMemo(() => {
                     return getTabBarIconSource(route.name, isFocused);
                 }, [route.name, isFocused]);
@@ -79,8 +78,8 @@ const CustomBottomTabNavigator: React.FC = () => {
     return (
         <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}>
             <Tab.Screen name="Home" component={HomeScreen} options={{ tabBarLabel: '首页', headerShown: false }} />
-            <Tab.Screen name="RadarScreen" component={RadarScreen} options={{ tabBarLabel: '雷达' }} />
-            <Tab.Screen name="MineScreen" component={MineScreenScreen} options={{ tabBarLabel: '我的' }} />
+            <Tab.Screen name="RadarScreen" component={RadarScreen} options={{ tabBarLabel: '雷达', headerShown: false }} />
+            <Tab.Screen name="MineScreen" component={MineScreenScreen} options={{ tabBarLabel: '我的', headerShown: false }} />
         </Tab.Navigator>
     );
 };
